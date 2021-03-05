@@ -47,7 +47,8 @@ def accepting_thread(soc, conn_type, connected_clients):
                 #receive his nickname
                 nickname = con.recv(1024).decode('utf-8')
             connected_clients[addr] = con
-            print(f"SERVER NEW CONNECTION: current connections: {connected_clients.items()}")
+            print(f"SERVER NEW CONNECTION: current connections on {conn_type}: {connected_clients.items()}")
+            
             t = threading.Thread(target=accept_client, args=(con, addr, conn_type, nickname, connected_clients))
             t.daemon = True
             t.start()
