@@ -30,23 +30,25 @@ def send_msg():
             print(f"CLIENT ERROR: {e}")
             return
 
-#tcp socket
+#Tcp socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((SERVER_IP, PORT))
 
-#udp socket
+#Udp socket
 s_udp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s_udp.connect((SERVER_IP, PORT_UDP))
 
+#Generating random nickname and sending hello msg to server
 nickname = NICKNAMES[randint(0, len(NICKNAMES))] #input()
 s.sendall(bytes(f'Hi my nick is: {nickname}', encoding='utf-8'))
 
-#handling receving and sending
+#Handling receving and sending
 sending_thread = threading.Thread(target=send_msg)
 receive_thread = threading.Thread(target= receive_msg, args=(s,))
 receive_thread_udp = threading.Thread(target= receive_msg, args=(s_udp,))
-threads = [sending_thread, receive_thread, receive_thread_udp]
 
+#Starting Threads and setting them to be daemons so when main thread will die they will be killed as well
+threads = [sending_thread, receive_thread, receive_thread_udp]
 for t in threads:
     t.daemon = True
     t.start()

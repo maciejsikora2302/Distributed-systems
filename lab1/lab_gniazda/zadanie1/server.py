@@ -44,9 +44,10 @@ def accepting_thread(soc, conn_type):
         t.start()
     except Exception as e:
         print(f"SERVER ERROR: {e}")
+        return
 
 
-print(f"SERVER: Server is starting it's job...")
+print(f"SERVER: Server is starting its job...")
 #Creates TCP socket
 soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 soc.bind((SERVER_IP, PORT))
