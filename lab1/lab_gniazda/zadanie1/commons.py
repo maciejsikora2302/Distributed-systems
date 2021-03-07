@@ -1,7 +1,34 @@
 PORT = 38000
 SERVER_IP = "127.0.0.1"
 
-PORT_UDP = 48000
+SERVER_IP_UDP = "127.0.0.100"
+PORT_UDP = 48005
+
+
+
+from sys import getsizeof
+def send_in_fragments(msg, s_udp, address):
+    chunk = ""
+    i = 0
+    for char in msg:
+        chunk += char
+        if getsizeof(chunk)>1000 and getsizeof(chunk)<1024:
+            print(f"Sending chunk {chunk} of size {getsizeof(chunk)} to {address}")
+            s_udp.sendto(bytes(chunk, encoding='utf-8'), address)
+            chunk = ""
+    print(f"Sending chunk {chunk} of size {getsizeof(chunk)} to {address}")
+    s_udp.sendto(bytes(chunk, encoding='utf-8'), address)
+    chunk = ""
+
+
+
+
+
+
+
+
+
+
 NICKNAMES = [
 "Cannoli",
 "Sweety",
