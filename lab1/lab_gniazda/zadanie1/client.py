@@ -22,15 +22,17 @@ def receive_msg_udp(soc):
         try:
             final_msg = ""
             msg, addr = soc.recvfrom(1024)
-            msg = msg.decode('utf-8', "backslashreplace")
-            while msg[-2:] != "-F":
+            msg = msg.decode('utf-8')
+            if msg[:2] == "-U":
+                msg = msg[2:]
+            while msg[-3:-1] != "-F":
                 final_msg += msg
                 msg, addr = soc.recvfrom(1024)
-                msg = msg.decode('utf-8', "backslashreplace")
+                msg = msg.decode('utf-8')
 
-            final_msg += msg
+            final_msg += msg[:-3]
             # print(f"CLIENT: Incoming message-> {msg.decode('utf-8')}")
-            final_msg = final_msg.replace('\\n', '\n')
+            # final_msg = final_msg.replace('\\n', '\n')
             print(f"{final_msg}")
         except Exception as e:
             print(f"CLIENT ERROR: {e}")
@@ -45,11 +47,11 @@ def send_msg(soc, soc_udp):
             if msg[:2] == "-U":
                 to_add = input()
                 while to_add != "-F":
-                    print("adding")
-                    msg += to_add
+                    # print("adding")
+                    msg += to_add + '\n'
                     to_add = input()
-                msg += to_add
-                print("finished adding")
+                msg += to_add + '\n'
+                # print("finished adding")
                 send_in_fragments(msg, s_udp, (SERVER_IP_UDP, PORT_UDP))
                 # s_udp.sendto(bytes(msg, encoding='utf-8'), (SERVER_IP_UDP, PORT_UDP))
             elif msg[:2] == "-M":

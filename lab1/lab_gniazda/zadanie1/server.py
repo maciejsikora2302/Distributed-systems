@@ -74,23 +74,22 @@ def udp_server():
         try:
             print(f"SERVER: Server waits for msg on UDP...")
             msg, addr_udp = soc_udp.recvfrom(1024)
-            msg = msg.decode('utf-8', "backslashreplace")
+            msg = msg.decode('utf-8')
             if msg == "&&FIRST&&":
-                print("New connection")
+                print("SERVER UDP: New connection")
                 nickname, addr_udp = soc_udp.recvfrom(1024)
                 connected_clients.add((addr_udp, nickname.decode('utf-8')))
             else:
                 final_msg = ""
                 final_msg += msg
-                while msg[-2:] != "-F":
-                    print(f"receiving more..., current msg {msg}")
+                while msg[-3:-1] != "-F":
                     msg, addr_udp = soc_udp.recvfrom(1024)
-                    msg = msg.decode('utf-8', "backslashreplace")
+                    msg = msg.decode('utf-8')
                     final_msg += msg
-                print(f"UDP SERVER: msg on upd {final_msg}")
+                print(f"SERVER UDP: message on udp {final_msg}")
                 for client in connected_clients:
                     if client[0] != addr_udp:
-                        print(f"SERVER: Sending msg[{final_msg}] from udpsock to {client}")
+                        print(f"SERVER UDP: Sending msg[{final_msg}] from udpsock to {client}")
                         send_in_fragments(final_msg, soc_udp, client[0])
                         # soc_udp.sendto(bytes(f"{client[1]}: {msg}", encoding='utf-8'), client[0])            
             # print(f"SERVER: New connection on UDP socket from addr={addr_udp}")
@@ -104,7 +103,7 @@ def udp_server():
             # t.daemon = True
             # t.start()
         except Exception as e:
-            print(f"SERVER ERROR UDP: {e}")
+            print(f"SERVER UDP ERROR: {e}")
             break
 
 print(f"SERVER: Server is starting its job...")
