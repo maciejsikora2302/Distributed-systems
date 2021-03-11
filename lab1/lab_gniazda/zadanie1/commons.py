@@ -4,7 +4,9 @@ SERVER_IP = "127.0.0.1"
 SERVER_IP_UDP = "127.0.0.100"
 PORT_UDP = 48005
 
-
+MCAST_GRP = '224.1.1.1'
+MCAST_PORT = 58009
+MULTICAST_TTL = 2
 
 from sys import getsizeof
 def send_in_fragments(msg, s_udp, address):
@@ -20,6 +22,18 @@ def send_in_fragments(msg, s_udp, address):
     s_udp.sendto(bytes(chunk, encoding='utf-8'), address)
     chunk = ""
 
+def send_in_fragments_multi(msg, soc, address):   
+    chunk = ""
+    i = 0
+    for char in msg:
+        chunk += char
+        if getsizeof(chunk)>1000 and getsizeof(chunk)<1024:
+            # print(f"Sending chunk {chunk} of size {getsizeof(chunk)} to {address}")
+            soc.sendto(bytes(chunk, encoding='utf-8'), address)
+            chunk = ""
+    # print(f"Sending chunk {chunk} of size {getsizeof(chunk)} to {address}")
+    soc.sendto(bytes(chunk, encoding='utf-8'), address)
+    chunk = ""
 
 
 
