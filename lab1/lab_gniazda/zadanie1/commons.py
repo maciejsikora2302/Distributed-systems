@@ -15,10 +15,8 @@ def send_in_fragments(msg, s_udp, address):
     for char in msg:
         chunk += char
         if getsizeof(chunk)>1000 and getsizeof(chunk)<1024:
-            # print(f"Sending chunk {chunk} of size {getsizeof(chunk)} to {address}")
             s_udp.sendto(bytes(chunk, encoding='utf-8'), address)
             chunk = ""
-    # print(f"Sending chunk {chunk} of size {getsizeof(chunk)} to {address}")
     s_udp.sendto(bytes(chunk, encoding='utf-8'), address)
     chunk = ""
 
@@ -28,17 +26,10 @@ def send_in_fragments_multi(msg, soc, address):
     for char in msg:
         chunk += char
         if getsizeof(chunk)>1000 and getsizeof(chunk)<1024:
-            # print(f"Sending chunk {chunk} of size {getsizeof(chunk)} to {address}")
             soc.sendto(bytes(chunk, encoding='utf-8'), address)
             chunk = ""
-    # print(f"Sending chunk {chunk} of size {getsizeof(chunk)} to {address}")
     soc.sendto(bytes(chunk, encoding='utf-8'), address)
     chunk = ""
-
-
-
-
-
 
 
 

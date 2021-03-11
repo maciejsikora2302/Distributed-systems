@@ -6,18 +6,15 @@ import sys
 from random import randint
 
 def receive_msg(soc):
-    # print("awaiting for msg from server")
     while True:
         try:
             msg = soc.recv(1024)
-            # print(f"CLIENT: Incoming message-> {msg.decode('utf-8')}")
-            print(f"{msg.decode('utf-8')}")
+            print(f"{msg.decode('utf-8')}") #Display received message
         except Exception as e:
             print(f"CLIENT ERROR: {e}")
             return
 
 def receive_msg_udp(soc):
-    # print("awaiting for msg from server")
     while True:
         try:
             final_msg = ""
@@ -25,15 +22,13 @@ def receive_msg_udp(soc):
             msg = msg.decode('utf-8')
             if msg[:2] == "-U" or msg[:2] == "-M":
                 msg = msg[2:]
-            while msg[-3:-1] != "-F":
+            while msg[-3:-1] != "-F": #At the end there is always \n
                 final_msg += msg
                 msg, addr = soc.recvfrom(1024)
                 msg = msg.decode('utf-8')
 
-            final_msg += msg[:-3]
-            # print(f"CLIENT: Incoming message-> {msg.decode('utf-8')}")
-            # final_msg = final_msg.replace('\\n', '\n')
-            print(f"{final_msg}")
+            final_msg += msg[:-3] #Delete -F flag
+            print(f"{final_msg}") #Display message
         except Exception as e:
             print(f"CLIENT ERROR: {e}")
             return
@@ -41,29 +36,22 @@ def receive_msg_udp(soc):
 def send_msg(soc, soc_udp, soc_multi):
     while True:
         try:
-            # print(f"{my_id}, {nickname}: ", end='')
             msg = input()
-            # print(f"CLIENT: Sending message-> {msg}")
+            #Parsing message depending on provided flag (optional argument)
             if msg[:2] == "-U":
                 to_add = input()
                 while to_add != "-F":
-                    # print("adding")
                     msg += to_add + '\n'
                     to_add = input()
                 msg += to_add + '\n'
-                # print("finished adding")
                 send_in_fragments(msg, soc_udp, (SERVER_IP_UDP, PORT_UDP))
-                # s_udp.sendto(bytes(msg, encoding='utf-8'), (SERVER_IP_UDP, PORT_UDP))
             elif msg[:2] == "-M":
                 to_add = input()
                 while to_add != "-F":
-                    # print("adding")
                     msg += to_add + '\n'
                     to_add = input()
                 msg += to_add + '\n'
-                # print("finished adding")
                 send_in_fragments_multi(msg, soc_multi, (MCAST_GRP, MCAST_PORT))
-                # s_udp.sendto(bytes(msg, encoding='utf-8'), (SERVER_IP_UDP, PORT_UDP))
             else:
                 soc.sendall(bytes(msg, encoding='utf-8'))
             
@@ -98,7 +86,7 @@ print("CLIENT: Connected and Nicnkname sent!")
 import struct
 s_multi = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 s_multi.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s_multi.bind(('', MCAST_PORT))
+s_multi.bind(('', MCAST_PORT)) #Listen to everything that is happening on this socket
 mreq = struct.pack("4sl", socket.inet_aton(MCAST_GRP), socket.INADDR_ANY)
 s_multi.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
