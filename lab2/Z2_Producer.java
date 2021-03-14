@@ -20,7 +20,7 @@ public class Z2_Producer {
 
         // exchange
         String EXCHANGE_NAME = "exchange1";
-        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
+        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         while (true) {
 
@@ -35,7 +35,7 @@ public class Z2_Producer {
             }
 
             // publish
-            channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes("UTF-8"));
+            channel.basicPublish(EXCHANGE_NAME, "direct", null, message.getBytes("UTF-8"));
             System.out.println("Sent: " + message);
         }
     }

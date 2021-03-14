@@ -23,11 +23,11 @@ public class Z2_Consumer {
 
         // exchange
         String EXCHANGE_NAME = "exchange1";
-        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
+        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         // queue & bind
         String queueName = channel.queueDeclare().getQueue();
-        channel.queueBind(queueName, EXCHANGE_NAME, "");
+        channel.queueBind(queueName, EXCHANGE_NAME, "not");
         System.out.println("created queue: " + queueName);
 
         // consumer (message handling)
