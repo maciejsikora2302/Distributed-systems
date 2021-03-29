@@ -3,3 +3,12 @@
 *.pdf
 *Sikora_Maciej*
 *oświadczenie*
+*bin
+*docs
+*lib
+*logs
+*bin/LICENSE*
+*bin/NOTICE*
+*bin/README*
+*-bin.tag.gz
+lab3/apache-zookeeper-3.6.1-bin.tar.gz
