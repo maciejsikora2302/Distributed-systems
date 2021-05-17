@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="lab5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/genson-1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/apache-tomcat-9.0.45.zip!/" />
+      <root url="jar://$PROJECT_DIR$/Materiały do ćwiczeń-20210510.zip!/" />
+      <root url="jar://$PROJECT_DIR$/jaxrs-ri-2.22-with-deps.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
